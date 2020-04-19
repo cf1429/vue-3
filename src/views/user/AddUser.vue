@@ -1,10 +1,10 @@
 <template>
   <el-form style="width: 60%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
     <el-form-item label="账户" prop="userName">
-      <el-input v-model="ruleForm.userName"></el-input>
+      <el-input v-model="ruleForm.userName" style="width: 50%"></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="userPassword">
-      <el-input v-model="ruleForm.userPassword"></el-input>
+      <el-input v-model="ruleForm.userPassword" style="width: 50%"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -13,6 +13,8 @@
   </el-form>
 </template>
 <script>
+import {requestPost} from "../../network/request";
+
 export default {
   data() {
     return {
@@ -36,8 +38,13 @@ export default {
       const _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('http://localhost:8070/api/user/addUser',_this.ruleForm).then(function (res) {
-            if(res.data.code == 200){
+          var url = '/api/user/addUser'
+          var params = {
+            userName: _this.ruleForm.userName,
+            userPassword: _this.ruleForm.userPassword
+          }
+          requestPost(url,params).then(res =>{
+            if(res.data.flag){
               _this.$alert('添加成功','ok',{
                 confirmButtonText: '确定',
                 callback: action => {
@@ -45,8 +52,10 @@ export default {
                 }
               })
             }else{
-               _this.$message(res.data.message);
+              _this.$message(res.data.message);
             }
+          }).catch(err =>{
+            _this.$message("系统出错");
           })
         } else {
           console.log('error submit!!');

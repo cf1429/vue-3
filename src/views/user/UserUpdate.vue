@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import {requestPost} from "../../network/request";
+
 export default {
   data() {
     return {
@@ -38,8 +40,15 @@ export default {
       const _this = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('http://localhost:8070/api/user/updateUser',_this.ruleForm).then(function (res) {
-            if(res.data.code == 200){
+          var url = '/api/user/updateUser'
+          var params = {
+            id: _this.ruleForm.id,
+            userName: _this.ruleForm.userName,
+            roleCode: (_this.ruleForm.roleCode) != null?_this.ruleForm.roleCode:''
+          }
+          console.log(222)
+          requestPost(url,params).then(res =>{
+            if(res.data.flag){
               _this.$alert('修改成功','ok',{
                 confirmButtonText: '确定',
                 callback: action => {
@@ -49,6 +58,8 @@ export default {
             }else{
               _this.$message(data.message);
             }
+          }).catch(err =>{
+            _this.$message("系统出错");
           })
         } else {
           return false;
@@ -62,16 +73,16 @@ export default {
   created(){
     var id = this.$route.query.id
     const _this = this
-    axios({
-      method: 'post',
-      url: 'http://localhost:8070/api/user/findUserById',
-      data: {
-        id: id
-      }
-    }).then(function (res) {
-      if(res.data.code == 200){
+    var url = '/api/user/findUserById'
+    var params = {
+      id: id
+    }
+    requestPost(url ,params).then(res =>{
+      if(res.data.flag){
         _this.ruleForm = res.data.data
       }
+    }).catch(err =>{
+      _this.$message("系统出错")
     })
   }
 }

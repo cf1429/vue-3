@@ -7,6 +7,7 @@ import Index from '../views/Index.vue'
 import Login from '../views/login/Login.vue'
 import WineMange from '../views/wine/WineMange.vue'
 import AddWine from '../views/wine/AddWine.vue'
+import WineUpdate from '../views/wine/WineUpdate.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
           name: '添加酒水',
           component: AddWine,
           show:true
+        },
+        {
+          path: '/wineUpdate',
+          component: WineUpdate,
+          show: false,
         }
       ]
     },

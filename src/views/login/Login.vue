@@ -49,7 +49,7 @@ export default {
             userName:_this.loginForm.username,
             userPassword:_this.loginForm.password
           }).then(function (res) {
-            if(res.data.code == 200){
+            if(res.data.flag){
               _this.$message('登录成功')
               _this.$router.push("/wineMange")
             }else{

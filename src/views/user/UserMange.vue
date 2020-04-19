@@ -46,6 +46,9 @@
 </template>
 
 <script>
+import {request} from "../../network/request";
+import {requestPost} from "../../network/request";
+
 export default {
   data() {
     return {
@@ -69,15 +72,17 @@ export default {
       const _this = this
       var pageSize = _this.pageSize
       var pageIndex = pageSize*obj
-      axios.get("http://localhost:8070/api/user/findAllUser/"+pageIndex+"/"+pageSize).then(function (res) {
-        //console.log(res.data.data.data)
+      request({
+        url: '/api/user/findAllUser/'+pageIndex+'/'+pageSize
+      }).then(res =>{
         _this.tableData = res.data.data.data
         _this.pageSize = res.data.data.pageSize
         _this.total = res.data.data.total
+      }).catch(err =>{
+        _this.$message('系统出错')
       })
     },
     edit(row){
-      //this.$router.push('/userUpdate')
      this.$router.push({
         path: '/update',
         query:{
@@ -87,8 +92,11 @@ export default {
     },
     del(row){
       const _this = this
-      axios.delete("http://localhost:8070/api/user/deleteUser/"+row.id).then(function (res) {
-        if(res.data.code == 200){
+      request({
+        url:"/api/user/deleteUser/"+row.id,
+        method: 'delete'
+      }).then(res =>{
+        if(res.data.flag){
           _this.$alert('删除成功','ok',{
             confirmButtonText: '确定',
             callback: action => {
@@ -96,8 +104,10 @@ export default {
             }
           })
         }else{
-          _this.$message('删除失败');
+          _this.$message(res.data.message);
         }
+      }).catch(err =>{
+        _this.$message("系统出错");
       })
     }
   },
