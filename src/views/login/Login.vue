@@ -50,10 +50,13 @@ export default {
             userPassword:_this.loginForm.password
           }).then(function (res) {
             if(res.data.flag){
-              _this.$message('登录成功')
+              console.log(res)
+              _this.$message.success('登录成功')
               _this.$router.push("/wineMange")
+              //将token值放到sessionStorage中，因后台接口没有token，古先放一个值代替
+              window.sessionStorage.setItem("token",res.data.code)
             }else{
-              _this.$message(res.data.message);
+              _this.$message.error(res.data.message);
             }
           })
         }
