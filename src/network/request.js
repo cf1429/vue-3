@@ -4,7 +4,11 @@ export function request(config) {
   // 创建axios的实例
   const instance = axios.create({
     baseURL: 'http://localhost:8070',
-    timeout: 5000
+    timeout: 5000,
+  })
+  instance.interceptors.request.use(config =>{
+    config.headers.Authorization = window.sessionStorage.getItem("token")
+    return config
   })
   return instance(config)
 }
