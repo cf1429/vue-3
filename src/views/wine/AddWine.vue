@@ -13,19 +13,8 @@
       <el-input v-model="ruleForm.costPrice" placeholder="请输入成本价" style="width: 46%"></el-input>
     </el-form-item>
     <el-form-item label="图片" prop="picture">
-      <!--<el-input v-model="ruleForm.picture" style="width: 46%"></el-input>-->
-      <el-upload
-        class="upload-demo"
-        ref="upload"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :file-list="fileList"
-        :auto-upload="false">
-        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-      </el-upload>
+      <input type="file" ref="fileInt">
+      <br><el-button type="primary" @click="subFile()">上传</el-button>
     </el-form-item>
     <el-form-item label="进货日期" prop="purchaseDate">
       <el-col :span="11">
@@ -48,7 +37,8 @@
 </template>
 <script>
 import {requestPost} from "../../network/request";
-
+import {filePost} from "../../network/request";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -147,15 +137,32 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    submitUpload() {
-      this.$refs.upload.submit();
+    subFile() {
+      const _this = this
+      var file = this.$refs.fileInt.files[0];
+      var data = new FormData();
+      data.append('file', file);
+      axios({
+        url: "/api/file/fileUpload",
+        data: data,
+        method: 'post',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      }).then(res =>{
+        console.log(res)
+        if(res.data.flag){
+          console.log(111)
+          _this.ruleForm.picture = res.data.data
+          _this.$message("上传成功");
+        }else{
+          _this.$message(res.data.message);
+        }
+      }).catch(err =>{
+        _this.$message("系统出错");
+      })
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    }
+
   }
 }
 </script>

@@ -1,5 +1,7 @@
 //可以配置多个实例
 import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:8070'
+
 export function request(config) {
   // 创建axios的实例
   const instance = axios.create({
@@ -39,8 +41,9 @@ export function requestPost(url,params) {
       reject(err)
     })
   })
-
-
-
-  
 }
+
+
+
+
+
