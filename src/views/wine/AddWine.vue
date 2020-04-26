@@ -13,7 +13,7 @@
       <el-input v-model="ruleForm.costPrice" placeholder="请输入成本价" style="width: 46%"></el-input>
     </el-form-item>
     <el-form-item label="图片" prop="picture">
-      <input type="file" ref="fileInt">
+      <input type="file" ref="fileInt" accept="image/jp2,image/jpeg,image/jpeg,image/jpeg">
       <br><el-button type="primary" @click="subFile()">上传</el-button>
     </el-form-item>
     <el-form-item label="进货日期" prop="purchaseDate">

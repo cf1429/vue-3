@@ -26,7 +26,9 @@
     <el-table
       :data="tableData"
       border
-      style="width: 100%">
+      :header-cell-style="{'text-align':'center'}"
+      :cell-style="{'text-align':'center'}"
+      style="width: 100%;">
       <el-table-column
         fixed
         prop="id"
@@ -52,6 +54,9 @@
         prop="picture"
         label="图片"
         width="200">
+        <template slot-scope="scope">
+          <img :src="scope.row.filePath" style="width: 100px;height:50px;" @click="openImg(scope.row.filePath)">
+        </template>
       </el-table-column>
       <el-table-column
         prop="purchaseDateStr"
@@ -213,6 +218,10 @@ export default {
         _this.$message('系统出错')
       })
 
+    },
+    openImg(obj){
+      console.log(obj)
+      window.open(obj)
     }
   },
   created() {
