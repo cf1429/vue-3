@@ -55,7 +55,7 @@
         label="图片"
         width="200">
         <template slot-scope="scope">
-          <img :src="scope.row.filePath" style="width: 100px;height:50px;" @click="openImg(scope.row.filePath)">
+          <img v-if="scope.row.filePath != null" :src="scope.row.filePath" style="width: 100px;height:50px;" @click="openImg(scope.row.filePath)">
         </template>
       </el-table-column>
       <el-table-column
@@ -206,8 +206,8 @@ export default {
         pageSize: _this.pageSize,
         pageIndex: _this.pageSize*this.pageIndex,
         name: (_this.name) != null ? this.name:'',
-        expiredDateStart: (_this.expiredDateStart) != null ? _this.$moment(  _this.expiredDateStart).format("YYYY-DD-MM") : '',
-        expiredDateEnd: (_this.expiredDateEnd) != null ? _this.$moment( _this.expiredDateEnd).format("YYYY-DD-MM") : ''
+        expiredDateStart: (_this.expiredDateStart) != null ? _this.$moment(  _this.expiredDateStart).format("YYYY-MM-DD") : '',
+        expiredDateEnd: (_this.expiredDateEnd) != null ? _this.$moment( _this.expiredDateEnd).format("YYYY-MM-DD") : ''
       }
       requestPost(url, params).then(res =>{
         _this.tableData = res.data.data.data

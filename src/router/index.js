@@ -20,7 +20,7 @@ const routes = [
       path: '/wineMange',
       name: '酒水管理',
       component: Index,
-      redirect: '/wineMange',   /*默认进入的页面，可以看做是登录之后的首页*/
+      // redirect: '/wineMange',   /*默认进入的页面，可以看做是登录之后的首页*/
       show: true,
       children:[
         {

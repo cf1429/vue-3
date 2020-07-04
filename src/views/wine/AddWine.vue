@@ -148,6 +148,7 @@ export default {
         method: 'post',
         headers: {
           'Content-Type': 'multipart/form-data',
+          'token': window.sessionStorage.getItem("token")
         }
       }).then(res =>{
         console.log(res)

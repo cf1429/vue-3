@@ -9,7 +9,7 @@ export function request(config) {
     timeout: 5000,
   })
   instance.interceptors.request.use(config =>{
-    config.headers.Authorization = window.sessionStorage.getItem("token")
+    config.headers.token = window.sessionStorage.getItem("token")
     return config
   })
   return instance(config)
@@ -33,7 +33,8 @@ export function requestPost(url,params) {
         return ret
       }],
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'token': window.sessionStorage.getItem("token")
       }
     }).then(res =>{
       resolve(res)

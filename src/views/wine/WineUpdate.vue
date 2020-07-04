@@ -16,7 +16,8 @@
       <el-input v-model="ruleForm.costPrice"></el-input>
     </el-form-item>
     <el-form-item label="图片" prop="picture">
-      <el-input v-model="ruleForm.picture"></el-input>
+      <input type="file" ref="fileInt" accept="image/jp2,image/jpeg,image/jpeg,image/jpeg">
+      <br><el-button type="primary" @click="subFile()">上传</el-button>
     </el-form-item>
     <el-form-item label="进货日期" prop="purchaseDate">
       <el-col :span="11">
@@ -41,6 +42,7 @@
 <script>
 import {request} from "../../network/request";
 import {requestPost} from "../../network/request";
+import axios from "axios";
 
 export default {
   data() {
@@ -121,7 +123,32 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
+    },
+    subFile() {
+      const _this = this
+      var file = this.$refs.fileInt.files[0];
+      var data = new FormData();
+      data.append('file', file);
+      axios({
+        url: "/api/file/fileUpload",
+        data: data,
+        method: 'post',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      }).then(res =>{
+        console.log(res)
+        if(res.data.flag){
+          console.log(111)
+          _this.ruleForm.picture = res.data.data
+          _this.$message("上传成功");
+        }else{
+          _this.$message(res.data.message);
+        }
+      }).catch(err =>{
+        _this.$message("系统出错");
+      })
+    },
   },
   created(){
     var id = this.$route.query.id

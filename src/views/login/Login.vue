@@ -44,17 +44,18 @@ export default {
       const _this = this
       this.$refs[loginForm].validate((valid) => {
         if(valid){
-          console.log(_this.loginForm)
           axios.post('http://localhost:8070/api/user/login',{
             userName:_this.loginForm.username,
             userPassword:_this.loginForm.password
           }).then(function (res) {
             if(res.data.flag){
-              console.log(res)
               _this.$message.success('登录成功')
-              _this.$router.push("/wineMange")
               //将token值放到sessionStorage中，因后台接口没有token，古先放一个值代替
-              window.sessionStorage.setItem("token",res.data.code)
+              window.sessionStorage.setItem("token",res.data.data.token)
+              _this.$router.push({
+                path:"/wineMange"
+              })
+
             }else{
               _this.$message.error(res.data.message);
             }
